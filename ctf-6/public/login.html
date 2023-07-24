@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Helcim CTF</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="wrapper">
+      <div class="title"><span>User Login Portal</span></div>
+      <form id="loginForm">
+        <div class="row">
+          <i class="fas fa-user"></i>
+          <input name="username" type="text" id="username" placeholder="Username" required>
+        </div>
+        <div class="row">
+          <i class="fas fa-lock"></i>
+          <input name="password" type="password" id="password" placeholder="Password" required>
+          
+        </div>
+
+        <div class="row button">
+          <input type="submit" value="Login">
+        </div>
+        <div class="signup-link">Not a member? <a href="#">Signup now</a></div>
+      </form>
+    </div>
+  </div>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function (event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      const loginData = {
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+        cardid: '38b3eff8baf56627478ec76a704e9b52'
+      };
+
+      try {
+        const loginResponse = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(loginData)
+        });
+
+        if (loginResponse.ok) {
+          const loginResponseData = await loginResponse.json();
+          const jwtToken = loginResponseData.token; // Extract the JWT token from the response data
+          console.log('JWT Token:', jwtToken);
+
+          // Redirect to profile.html with the JWT token as a URL parameter
+          window.location.href = `profile.html?token=${encodeURIComponent(jwtToken)}`;
+        } else {
+          alert('Invalid Username or Password')
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>User Profile</title>
+  <style>
+    h1 {
+      text-align: center;
+    }
+
+    .container {
+      border: 5px solid;
+      margin: auto;
+      width: 30%;
+      padding: 10px;
+      /* text-align: center; */
+    }
+
+    form {
+  /* Center the form element */
+  border: 1px solid #ccc;
+  padding: 20px;
+  display: flex;
+  flex-direction: column; /* Align the form inputs vertically */
+  align-items: center;
+}
+
+form input {
+  margin-bottom: 15px; /* You can adjust the value as needed */
+}
+
+  </style>
+
+</head>
+
+<body>
+  <h1>User Card Data:</h1>
+  <div class="container">
+    <div id="data-container"></div>
+  </div>
+
+  <div class="centered-form"></div>
+  
+  <form action="/api/v2/cardData/users/?id=1" method="POST">
+    <h1>Update User Card Data:</h1>
+    <input name="cnum" type="text" placeholder="Enter New Card Number" required>
+  </br>
+    <input type="submit" value="Update">
+
+  </form>
+  </div>
+
+
+</body>
+<script>
+  fetch('/api/v2/cardData/users/?id=1')
+    .then(res => {
+      return res.json();
+    })
+    .then(data => {
+      // Access the properties of the 'data' object
+      const id = data.id;
+      const name = data.name;
+      const cardNumber = data.Card_Number;
+      const expiryDate = data.Expiry_date;
+      const cvv = data.CVV;
+      console.log(data);
+
+      // HTML markup to display the data
+      const markup = `
+        <div>
+          <ul>
+          <li>ID: ${id}</li>
+          <li>Name: ${name}</li>
+          <li>Card Number: ${cardNumber}</li>
+          <li>Expiry Date: ${expiryDate}</li>
+          <li>CVV: ${cvv}</li>
+          </ul>
+        </div>
+      `;
+
+      // Display the markup in the HTML document
+      document.getElementById('data-container').innerHTML = markup;
+    })
+</script>
+</body>
+
+</html>
